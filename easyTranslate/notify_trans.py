@@ -9,5 +9,5 @@ except ModuleNotFoundError:
 def pop_up(source_text, target_text):
     """Generates Pop-up notification when state changes"""
     notification = ToastNotifier()
-    notification.show_toast(source_text, target_text, icon_path=None, duration=5)
+    notification.show_toast(source_text, target_text, icon_path='image\\Bugs Bunny.ico', duration=5)
 

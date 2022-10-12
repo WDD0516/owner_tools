@@ -69,7 +69,3 @@ class TransApi:
             logging.error(UtilClient.assert_as_string(error.message))
 
 
-if __name__ == '__main__':
-    response = TransApi.get_result('ak', 'sk', 'c2e', '你是猪')
-    print(response.body.data.translated)
-    print(type(response))

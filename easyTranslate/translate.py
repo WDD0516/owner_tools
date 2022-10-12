@@ -1,6 +1,8 @@
 import logging
 
 import pyperclip
+import win32api
+import win32con
 from pynput import keyboard
 import time
 import re
@@ -10,12 +12,18 @@ from ali_trans import TransApi
 
 
 def copy_checked():  # 复制选中的文本
-    control = keyboard.Controller()  # 定义键盘控制的类
-    time.sleep(0.1)
-    with control.pressed(keyboard.Key.ctrl):  # 发送组合键
-        control.press('c')
-        control.release('c')
-    time.sleep(0.1)
+    win32api.keybd_event(17, 0, 0, 0)
+    win32api.keybd_event(67, 0, 0, 0)
+    win32api.keybd_event(67, 0, win32con.KEYEVENTF_KEYUP, 0)
+    win32api.keybd_event(17, 0, win32con.KEYEVENTF_KEYUP, 0)
+    time.sleep(0.05)
+
+    # control = keyboard.Controller()  # 定义键盘控制的类
+    # time.sleep(0.1)
+    # with control.pressed(keyboard.Key.ctrl_r):  # 发送组合键
+    #     control.press('c')
+    #     control.release('c')
+    # with control.pressed(keyboard.Key.ctrl, 'c'): logging.debug('触发ctrl+c')
 
 
 def get_clipboard():
@@ -51,7 +59,7 @@ class Translate:
             pop_up(self.clipboard_text, warning)
         elif mode == 'c2e' or mode == 'e2c':
             target_text = TransApi.get_result(self.AccessKeyID, self.AccessKeySecret, mode, self.clipboard_text)
-
+            pyperclip.copy(target_text)
             logging.debug(f'{self.clipboard_text} -> {target_text}')
             pop_up(self.clipboard_text, target_text)
         else:
@@ -62,4 +70,4 @@ def get_trans(ak, sk, mode):
     t = Translate(ak, sk)
     t.trans(mode)
     time.sleep(1)
-    logging.info(f'当前线程列表:{activeCount()}'+str(enumerate()))
+    logging.info(f'当前线程列表:{activeCount()}' + str(enumerate()))

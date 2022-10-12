@@ -28,7 +28,6 @@ class Hotkey(Thread):
 
     def reg(self, key, func, args=None):
         id = int(str(round(time() * 10))[-6:])
-        print(id)
         fnkey = key[0]
         vkey = key[1]
         info = {
@@ -38,13 +37,12 @@ class Hotkey(Thread):
             "args": args
         }
         self._reg_list[id] = info
-        # print(info) #这里待注册的信息
         sleep(0.1)
         return id
 
-    def fast_reg(self, id, key=(0, win32con.VK_HOME), func=lambda: print('热键注册开始')):
+    def fast_reg(self, id, key, func):
         if not self.regiskey(None, id, key[0], key[1]):
-            print("热键注册失败")
+            logging.error("热键注册失败")
             return None
         self.hkey_list[id] = func
         self.hkey_flags[id] = False

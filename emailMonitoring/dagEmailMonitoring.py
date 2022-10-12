@@ -9,7 +9,7 @@ from email.mime.text import MIMEText
 
 def check_list():
     list = []
-    with open(r'check_list',encoding='utf-8') as f:
+    with open('conf/check_list',encoding='utf-8') as f:
         list = f.read().split('\n')
     return list
 
