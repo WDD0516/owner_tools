@@ -62,6 +62,7 @@ class Hotkey(Thread):
                             thread_it(func, *args)
                         else:
                             thread_it(func)
+                        logging.debug(f'当前线程列表:{activeCount()}' + str(enumerate()))
                         self.hkey_flags[id] = False
 
         return inner
@@ -89,3 +90,12 @@ class Hotkey(Thread):
         finally:
             for id in self.hkey_list:
                 self.user32.UnregisterHotKey(None, id)
+            logging.debug('---------finally---------')
+
+if __name__ == '__main__':
+    hotkey = Hotkey()
+    # hotkey.reg(key=(win32con.MOD_CONTROL, 189), func=copy_checked)  # test
+    hotkey.reg(key=(win32con.MOD_CONTROL, 189), func=lambda:print(123))  # ctrl - 中译英
+    # hotkey.reg(key=(win32con.MOD_CONTROL, 187), func=lambda:print(456))  # ctrl = 英译中
+    # hotkey.reg(key=(win32con.MOD_ALT, win32con.VK_F9), func=lambda: print('激活热键'), args=None)
+    hotkey.start()  # 启动热键主线程

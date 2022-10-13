@@ -61,7 +61,11 @@ class Translate:
             target_text = TransApi.get_result(self.AccessKeyID, self.AccessKeySecret, mode, self.clipboard_text)
             pyperclip.copy(target_text)
             logging.debug(f'{self.clipboard_text} -> {target_text}')
-            pop_up(self.clipboard_text, target_text)
+            try:
+                pop_up(self.clipboard_text, target_text)
+            except Exception as e:
+                # 如有需要，请打印 error
+                logging.error(e)
         else:
             logging.warning('mode有误')
 
@@ -69,5 +73,3 @@ class Translate:
 def get_trans(ak, sk, mode):
     t = Translate(ak, sk)
     t.trans(mode)
-    time.sleep(1)
-    logging.info(f'当前线程列表:{activeCount()}' + str(enumerate()))
