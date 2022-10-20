@@ -56,13 +56,13 @@ class Translate:
         if (mode == 'c2e' and not self.is_cn) or (mode == 'e2c' and not self.is_en):
             warning = '该文本不包含中文' if mode == 'c2e' else '该文本不包含英文'
             logging.warning(self.clipboard_text + warning)
-            pop_up(self.clipboard_text, warning)
+            pop_up('warn', warning)
         elif mode == 'c2e' or mode == 'e2c':
             target_text = TransApi.get_result(self.AccessKeyID, self.AccessKeySecret, mode, self.clipboard_text)
             pyperclip.copy(target_text)
             logging.debug(f'{self.clipboard_text} -> {target_text}')
             try:
-                pop_up(self.clipboard_text, target_text)
+                pop_up(mode+'翻译结果', target_text)
             except Exception as e:
                 # 如有需要，请打印 error
                 logging.error(e)
